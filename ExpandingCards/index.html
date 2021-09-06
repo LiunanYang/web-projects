@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ExpandingCards</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: space-around;
+            height: 100vh;
+            overflow: hidden;
+            align-items: center;
+        }
+        .content{
+            display: flex;
+            width: 90vw;
+        }
+        .content .card{
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 20px;
+            flex: 1;
+            height: 80vh;
+            margin: 10px;
+            border-radius: 60px;
+            transition: flex 0.7s ease-in;
+            position: relative;
+        }
+        .content .card span{
+            position: absolute;
+            bottom: 50px;
+            left: 20px;
+            color:white;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        .content .active{
+            flex: 10;
+        }
+        .content .active span{
+            opacity: 1!important;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div style="background-image:url('https://picsum.photos/seed/picsum/800')" class="active card">
+        <span>Title one</span>
+    </div>
+    <div style="background-image:url('https://picsum.photos/seed/b/800')" class="card">
+        <span>Title two</span>
+    </div>
+    <div style="background-image:url('https://picsum.photos/seed/a/800')" class="card">
+        <span>Title three</span>
+    </div>
+</div>
+<script>
+    const cards = document.querySelectorAll(".card")
+    cards.forEach(i=>{
+        i.addEventListener('click',()=>{
+            removeActiveClass()
+            i.className+=" active"
+        })
+    })
+    function removeActiveClass(){
+        cards.forEach(j=>{
+            if(j.className.includes("active")){
+                j.classList.remove("active")
+            }
+        })
+    }
+</script>
+</body>
+</html>
