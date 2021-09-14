@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoTextEffect</title>
+    <style>
+        body{
+            background-color: pink;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .text-line{
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .control{
+            position: absolute;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <p class="text-line"></p>
+    <div class="control">
+        <label for="speed">速度(单位：毫秒):</label>
+        <input type="number" value="5" step="1" id="speed">
+    </div>
+
+    <script>
+        const text = "Hello world !"
+        const textEl = document.querySelector(".text-line")
+        const speedEl = document.querySelector("#speed")
+        let speed = speedEl.value
+        let idx = 0
+
+        writeText()
+        
+        speedEl.addEventListener('change',(e)=>{
+            speed = e.target.value
+        })
+        // 方案1:每调用一次方法会展示一轮文字，改变速度后会等到下一轮文字开始展示时生效
+        // function writeText(){
+        //     for(let i = 0;i<text.length;i++){
+        //         ((idx)=>{ 
+        //             setTimeout(()=>{
+        //                 textEl.innerText = text.slice(0, idx+1)
+        //                 if(idx<text.length-1){
+        //                     textEl.innerText +="_"
+        //                 }else{
+        //                     setTimeout(()=>{writeText()},speed*100)
+        //                 }
+        //             },speed*100*idx)
+        //         })(i)
+        //     }
+        // }
+
+        //方案2: 每调用一次方法会展示一个文字，改变速度后在下一个文字展示时生效
+        function writeText(){
+            textEl.innerText = text.slice(0, idx+1)
+            idx++
+            if(idx>=text.length){
+                idx = 0
+            }else{
+                textEl.innerText +="_"
+            }
+            setTimeout(writeText,speed*100)
+        }
+    </script>
+    
+</body>
+</html>
