@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProgressSteps</title>
+    <style>
+        :root {
+            --normal-color: #e0e0e0;
+            --active-color: #3498db;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .step-circle{
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            margin: 0px -7px 24px;
+            text-align: center;
+            line-height: 25px;
+            border-radius: 50%;
+            border: 2px solid var(--normal-color);   
+            transition: 0.3s;
+        }
+        .step-circle-active{
+            border-color:var(--active-color);
+        }
+        .step-line{
+            position: relative;
+            z-index: -1;
+            display: inline-block;
+            width: 50px;
+            height: 5px;
+            margin:3px 0px;
+            background-color: var(--normal-color);
+            /* transition: 1s; */
+        }
+        .step-line-active{
+            /* background-color: var(--active-color); */
+            z-index:1;
+            background:transparent;
+        }
+        .step-line:after,.step-line:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: var(--normal-color);
+            z-index:-2;
+        }
+        .step-line:before {
+            transition: .3s;
+            background: var(--active-color);
+            z-index:-1;
+        }          
+        .step-line-active:after,.step-line-active:before {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="step-container">
+        <div class="step-circle step-circle-active">1</div>
+        <span class="step-line"></span>
+        <div class="step-circle">2</div>
+        <span class="step-line"></span>
+        <div class="step-circle">3</div>
+        <span class="step-line"></span>
+        <div class="step-circle">4</div>
+        <span class="step-line"></span>
+        <div class="step-circle">5</div>
+    </div>
+    <div id="btn-container">
+        <button id="previous-btn" disabled>previous</button>
+        <button id="next-btn" >next</button>
+    </div>
+    <script>
+        const previous_btn = document.querySelector("#previous-btn")
+        const next_btn = document.querySelector("#next-btn")
+        const step_circle = document.querySelectorAll(".step-circle")
+        const step_line = document.querySelectorAll(".step-line")
+        // 生成一个计数器，起始数字为1
+        let idx = num(1)
+
+        // 下一个节点
+        next_btn.addEventListener('click',()=>{
+            if(previous_btn.disabled){
+                previous_btn.disabled = false
+            }
+            let now_idx = idx.value()
+            if(now_idx==step_circle.length-1){
+                next_btn.disabled = true
+            }
+            if(now_idx<step_circle.length){
+                let circle = step_circle[now_idx]
+                let line = step_line[now_idx-1]
+                circle.classList.add("step-circle-active")
+                line.classList.add("step-line-active")
+                idx.add(1)
+            }  
+        })
+        // 上一个节点
+        previous_btn.addEventListener('click',()=>{
+            if(next_btn.disabled){
+                next_btn.disabled = false
+            }
+            idx.add(-1)
+            let now_idx = idx.value()
+            if(now_idx>0){
+                let circle = step_circle[now_idx]
+                let line = step_line[now_idx-1]
+                circle.classList.remove("step-circle-active")
+                line.classList.remove("step-line-active")
+            }
+            if(now_idx==1){
+                previous_btn.disabled = true
+            }
+        })
+        //计数器
+        function num(x){
+            let n = x
+            return {
+                add(y){
+                    n += y
+                },
+                value(){
+                    return n
+                }
+            }
+        }
+    </script>
+</body>
+</html>
