@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodCheapFast</title>
+    <style>
+        h3{
+            text-align: center;
+        }
+        .switch_box{
+            margin: 10px;
+            text-align: center;
+        }
+        label{
+            display: inline-block;
+            width: 55px;
+        }
+        .switch{
+            position: relative;
+            box-sizing: content-box;
+            width: 70px;
+            height: 35px;
+            padding: 0;
+            border-radius: 40px;
+            border:3px solid transparent;
+        }
+        .switch_active{
+            background-color: #0052d9;
+        }
+        .switch_circle{
+            position: absolute;
+            top: 0;
+            width: 35px;
+            height: 35px;
+            background-color:#fff;
+            border-radius: 50%;
+            transition: .5s;
+        }
+        .circle_left{
+            left: 0;
+        }
+        .circle_right{
+            left: 35px;
+        }
+    </style>
+</head>
+<body>
+    <h3>How do you want your project to be?</h3>
+    <div class="switch_box">
+        <label for="">Good</label>
+        <button class="switch">
+            <span class="switch_circle circle_left"></span>
+        </button>
+    </div>
+    <div class="switch_box">
+        <label for="">Cheap</label>
+        <button class="switch">
+            <span class="switch_circle circle_left"></span>
+        </button>
+    </div>
+    <div class="switch_box">
+        <label for="">Fast</label>
+        <button class="switch">
+            <span class="switch_circle circle_left"></span>
+        </button>
+    </div>
+
+    
+    <script>
+        const switchs = document.getElementsByClassName("switch")
+        const circles = document.getElementsByClassName("switch_circle")
+        let switchStatus = new Array(switchs.length)
+        Array.from(switchs).forEach((ele,idx) => {
+            let circle = ele.getElementsByClassName("switch_circle")[0]
+            ele.addEventListener("click",()=>{
+                let count = 0
+                changeSwitch(ele,circle)  
+                if(ele.classList.contains("switch_active")){
+                    switchStatus[idx] = true
+                    for(let i =0;i<switchStatus.length;i++){
+                        if(switchStatus[i]==true){
+                            count++
+                        }
+                    }
+                    // 如果全打开了，则默认关闭最后打开的前一个
+                    if(count == switchStatus.length){
+                        let disIdx = idx>=1 ? idx-1:switchs.length-1
+                        changeSwitch(switchs[disIdx],circles[disIdx])  
+                        switchStatus[disIdx] = false
+                    }
+                }else{
+                    switchStatus[idx] = false
+                }
+            })  
+        })
+        // 更改开关状态
+        function changeSwitch(switchh,circle){
+            switchh.classList.toggle("switch_active")
+            circle.classList.toggle("circle_left")
+            circle.classList.toggle("circle_right") 
+        }
+    </script>
+    
+</body>
+</html>
