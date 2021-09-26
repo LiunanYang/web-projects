@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlurryLoading</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            background: url('https://picsum.photos/id/1003/1500/900') no-repeat;
+            background-size: cover;
+        }
+        .loading-text{
+            position: absolute;
+            top: 50vh;
+            left: 50vw;
+            font-size: 50px;
+            font-weight: bold;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="content"></div>
+    <p class="loading-text"></p>
+
+    <script>
+        const loadingText = document.querySelector(".loading-text")
+        const content = document.querySelector(".content")
+        let i = 0
+        let interval = setInterval(() => {
+            loadingText.innerText = `${++i}%`
+            let opacity = 1-Math.floor(i/10)*0.1
+            loadingText.style.opacity = opacity
+            content.style.filter = `blur(${10*opacity}px)`
+            if(i==100){
+                clearInterval(interval)
+            }
+        }, 80);
+    </script>
+</body>
+</html>
